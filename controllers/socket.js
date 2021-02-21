@@ -36,12 +36,27 @@ module.exports = function(io) {
 
 		socket.on('stickychange', ({id, data}) => {
 			const user = getUser(socket.id);
-			socket.broadcast.to(user.room).emit('onstickychange', {id, data})
+			socket.broadcast.to(user.room).emit('onstickychange', {id, data});
 		});
 
 		socket.on('shareImage', url => {
 			const user = getUser(socket.id);
 			socket.broadcast.to(user.room).emit('onshareimage', url);
+		});
+
+		socket.on('createtypespace', ({id, x, y, color}) => {
+			const user = getUser(socket.id);
+			socket.broadcast.to(user.room).emit('oncreatetypespace', {id, x, y, color});
+		});
+
+		socket.on('typespacechange', ({id, data}) => {
+			const user = getUser(socket.id);
+			socket.broadcast.to(user.room).emit('ontypespacechange', {id, data});
+		});
+
+		socket.on('removetypespace', id => {
+			const user = getUser(socket.id);
+			socket.broadcast.to(user.room).emit('onremovetypespace', id);
 		});
 
 		socket.on('disconnect', () => {
